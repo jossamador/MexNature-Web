@@ -1,1 +1,20 @@
-<p>place-list works!</p>
+<div class="table-container">
+  <h2>Listado de Lugares Naturales</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Coordenadas (Lat, Lon)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let place of places">
+        <td>{{ place.name }}</td>
+        <td>{{ place.category }}</td>
+        <td>{{ place.latitude | number:'1.2-4' }}, {{ place.longitude | number:'1.2-4' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

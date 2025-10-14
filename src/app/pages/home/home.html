@@ -1,1 +1,21 @@
-<div #mapContainer class="map-container"></div>
+<div class="home-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Cargando mapa y lugares...</p>
+    </div>
+  </div>
+  
+  <!-- Error State -->
+  <div *ngIf="error" class="error-banner">
+    <div class="error-content">
+      <h3>⚠️ Error</h3>
+      <p>{{ error }}</p>
+      <button (click)="ngAfterViewInit()" class="retry-button">Reintentar</button>
+    </div>
+  </div>
+  
+  <!-- Map Container -->
+  <div #mapContainer class="map-container"></div>
+</div>
