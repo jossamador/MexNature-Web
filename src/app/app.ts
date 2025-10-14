@@ -1,12 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SidebarComponent } from './shared/sidebar/sidebar'; // <-- Corregimos la ruta
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, SidebarComponent], // <-- AÑADIMOS EL SIDEBAR AQUÍ
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('MexNature.Web');
+export class AppComponent {
+  title = 'MexNature.Web';
 }
