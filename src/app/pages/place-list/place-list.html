@@ -1,20 +1,67 @@
-<div class="table-container">
-  <h2>Listado de Lugares Naturales</h2>
+<div class="place-list-container">
+  <div class="header">
+    <h2>Listado de Lugares Naturales</h2>
+    <p class="subtitle">Explora los destinos naturales más hermosos de México</p>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Categoría</th>
-        <th>Coordenadas (Lat, Lon)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let place of places">
-        <td>{{ place.name }}</td>
-        <td>{{ place.category }}</td>
-        <td>{{ place.latitude | number:'1.2-4' }}, {{ place.longitude | number:'1.2-4' }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando lugares...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error) {
+    <div class="error-state">
+      <div class="error-content">
+        <h3>⚠️ Error</h3>
+        <p>{{ error }}</p>
+        <button (click)="retryLoad()" class="retry-button">Reintentar</button>
+      </div>
+    </div>
+  }
+
+  <!-- Content State -->
+  @if (!loading && !error) {
+    <div class="content">
+      <!-- Filters -->
+      <div class="filters">
+        <label for="category-filter">Filtrar por categoría:</label>
+        <select id="category-filter" [(ngModel)]="selectedCategory" (change)="filterByCategory(selectedCategory)">
+          <option value="all">Todas las categorías</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+        <span class="count">({{ filteredPlaces.length }} lugares)</span>
+      </div>
+
+      <!-- Places Grid -->
+      <div class="places-grid">
+        @for (place of filteredPlaces; track place.id) {
+          <div class="place-card">
+            <div class="place-header">
+              <h3>{{ place.name }}</h3>
+              <span class="category-badge">{{ place.category }}</span>
+            </div>
+            <div class="place-details">
+              <div class="coordinates">
+                <strong>📍 Coordenadas:</strong>
+                <span>{{ place.latitude | number:'1.4-4' }}, {{ place.longitude | number:'1.4-4' }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Empty State -->
+      @if (filteredPlaces.length === 0) {
+        <div class="empty-state">
+          <p>No se encontraron lugares para la categoría seleccionada.</p>
+        </div>
+      }
+    </div>
+  }
 </div>

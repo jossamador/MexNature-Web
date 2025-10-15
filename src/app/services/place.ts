@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, of } from 'rxjs';
 
 // ✅ 1. Asegúrate de que esta interfaz esté aquí y se exporte
 export interface Place {
@@ -15,14 +15,56 @@ export interface Place {
   providedIn: 'root'
 })
 export class PlaceService {
-  private apiUrl = 'http://localhost:5141/api/places';
+  private apiUrl = 'https://localhost:7198/api/places';
 
   constructor(private http: HttpClient) { }
 
   // ✅ 2. Asegúrate de que el método devuelva un Observable<Place[]>
   getPlaces(): Observable<Place[]> {
+    // 🔧 TEMPORAL: Datos de prueba mientras se configura la BD
     return this.http.get<Place[]>(this.apiUrl).pipe(
-      catchError(this.handleError)
+      catchError((error) => {
+        console.error('API Error, using mock data:', error);
+        // Retornar datos de prueba en caso de error
+        const mockPlaces: Place[] = [
+          {
+            id: 1,
+            name: "Chichen Itzá",
+            category: "Zona Arqueológica",
+            latitude: 20.6843,
+            longitude: -88.5678
+          },
+          {
+            id: 2,
+            name: "Cenote Dos Ojos",
+            category: "Cenote",
+            latitude: 20.2259,
+            longitude: -87.3906
+          },
+          {
+            id: 3,
+            name: "Palenque",
+            category: "Zona Arqueológica",
+            latitude: 17.4839,
+            longitude: -92.0458
+          },
+          {
+            id: 4,
+            name: "Pico de Orizaba",
+            category: "Volcán",
+            latitude: 19.0310,
+            longitude: -97.2679
+          },
+          {
+            id: 5,
+            name: "Reserva de la Biosfera Sian Ka'an",
+            category: "Reserva Natural",
+            latitude: 19.5206,
+            longitude: -87.9394
+          }
+        ];
+        return of(mockPlaces);
+      })
     );
   }
 

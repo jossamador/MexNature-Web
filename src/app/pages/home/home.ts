@@ -22,7 +22,6 @@ export class Home implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initializeMap();
-    this.loadPlaces();
   }
 
   ngOnDestroy(): void {
@@ -33,6 +32,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
   private initializeMap(): void {
     try {
+      console.log('Initializing map...');
       (mapboxgl as any).accessToken = environment.mapboxToken;
 
       this.map = new mapboxgl.Map({
@@ -42,8 +42,16 @@ export class Home implements AfterViewInit, OnDestroy {
         zoom: 5
       });
 
+      // 🔧 CRÍTICO: Cargar lugares SOLO después de que el mapa esté listo
       this.map.on('load', () => {
         console.log('Map loaded successfully');
+        this.loadPlaces(); // ← Movido aquí
+      });
+
+      this.map.on('error', (error) => {
+        console.error('Map error:', error);
+        this.error = 'Error al cargar el mapa. Verifica tu token de Mapbox.';
+        this.loading = false;
       });
 
     } catch (error) {
@@ -54,22 +62,28 @@ export class Home implements AfterViewInit, OnDestroy {
   }
 
   private loadPlaces(): void {
+    console.log('Loading places...');
     this.placeService.getPlaces().subscribe({
       next: (places: Place[]) => {
         console.log('Places loaded:', places);
-        places.forEach((place: Place) => {
-          new mapboxgl.Marker()
-            .setLngLat([place.longitude, place.latitude])
-            .setPopup(new mapboxgl.Popup().setHTML(`
-              <div style="min-width: 200px;">
-                <h5 style="margin: 0 0 8px 0; color: #2d3748;">${place.name}</h5>
-                <p style="margin: 0; font-size: 0.9em; color: #4a5568;">
-                  <strong>Categoría:</strong> ${place.category}
-                </p>
-              </div>
-            `))
-            .addTo(this.map);
-        });
+        if (places && places.length > 0) {
+          places.forEach((place: Place) => {
+            console.log('Adding marker for:', place.name);
+            new mapboxgl.Marker()
+              .setLngLat([place.longitude, place.latitude])
+              .setPopup(new mapboxgl.Popup().setHTML(`
+                <div style="min-width: 200px;">
+                  <h5 style="margin: 0 0 8px 0; color: #2d3748;">${place.name}</h5>
+                  <p style="margin: 0; font-size: 0.9em; color: #4a5568;">
+                    <strong>Categoría:</strong> ${place.category}
+                  </p>
+                </div>
+              `))
+              .addTo(this.map);
+          });
+        } else {
+          console.warn('No places found');
+        }
         this.loading = false;
       },
       error: (error) => {
@@ -78,5 +92,11 @@ export class Home implements AfterViewInit, OnDestroy {
         this.loading = false;
       }
     });
+  }
+
+  retryLoad(): void {
+    this.error = null;
+    this.loading = true;
+    this.initializeMap();
   }
 }
