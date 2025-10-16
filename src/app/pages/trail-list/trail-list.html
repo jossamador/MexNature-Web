@@ -4,7 +4,6 @@
     <p class="subtitle">Descubre los mejores senderos para explorar la naturaleza mexicana</p>
   </div>
 
-  <!-- Loading State -->
   @if (loading) {
     <div class="loading-state">
       <div class="spinner"></div>
@@ -12,13 +11,11 @@
     </div>
   }
 
-  <!-- Content State -->
   @if (!loading) {
     <div class="content">
-      <!-- Filters -->
       <div class="filters">
         <label for="difficulty-filter">Filtrar por dificultad:</label>
-        <select id="difficulty-filter" [(ngModel)]="selectedDifficulty" (change)="filterByDifficulty(selectedDifficulty)">
+        <select id="difficulty-filter" [(ngModel)]="selectedDifficulty">
           <option value="all">Todas las dificultades</option>
           @for (difficulty of difficulties; track difficulty) {
             <option [value]="difficulty">{{ difficulty }}</option>
@@ -27,7 +24,6 @@
         <span class="count">({{ filteredTrails.length }} senderos)</span>
       </div>
 
-      <!-- Trails Grid -->
       <div class="trails-grid">
         @for (trail of filteredTrails; track trail.id) {
           <div class="trail-card">
@@ -37,30 +33,25 @@
                 {{ trail.difficulty }}
               </span>
             </div>
-            
+
             <div class="trail-info">
               <div class="info-row">
-                <span class="icon">📍</span>
-                <strong>Ubicación:</strong> {{ trail.location }}
-              </div>
-              <div class="info-row">
                 <span class="icon">📏</span>
-                <strong>Distancia:</strong> {{ trail.length }} km
+                <strong>Distancia:</strong> {{ trail.distanceKm }} km
               </div>
               <div class="info-row">
                 <span class="icon">⏱️</span>
-                <strong>Duración:</strong> {{ trail.duration }}
+                <strong>Duración:</strong> {{ trail.estimatedTimeMinutes }} min
               </div>
-            </div>
-            
-            <div class="trail-description">
-              <p>{{ trail.description }}</p>
+              <div class="info-row">
+                <span class="icon">🔄</span>
+                <strong>Circuito:</strong> {{ trail.isLoop ? 'Sí' : 'No' }}
+              </div>
             </div>
           </div>
         }
       </div>
 
-      <!-- Empty State -->
       @if (filteredTrails.length === 0) {
         <div class="empty-state">
           <p>No se encontraron senderos para la dificultad seleccionada.</p>

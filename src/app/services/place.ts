@@ -15,17 +15,17 @@ export interface Place {
   providedIn: 'root'
 })
 export class PlaceService {
-  private apiUrl = 'https://localhost:7198/api/places';
+  private apiUrl = 'http://localhost:5141/api/places';
 
   constructor(private http: HttpClient) { }
 
   // ✅ 2. Asegúrate de que el método devuelva un Observable<Place[]>
   getPlaces(): Observable<Place[]> {
-    // 🔧 TEMPORAL: Datos de prueba mientras se configura la BD
+    console.log('Connecting to API:', this.apiUrl);
     return this.http.get<Place[]>(this.apiUrl).pipe(
       catchError((error) => {
-        console.error('API Error, using mock data:', error);
-        // Retornar datos de prueba en caso de error
+        console.error('Error connecting to your API, using fallback data:', error);
+        // Solo usar datos de prueba como último recurso si tu API falla
         const mockPlaces: Place[] = [
           {
             id: 1,

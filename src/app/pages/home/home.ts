@@ -66,21 +66,45 @@ export class Home implements AfterViewInit, OnDestroy {
     this.placeService.getPlaces().subscribe({
       next: (places: Place[]) => {
         console.log('Places loaded:', places);
+        console.log('Total places received:', places.length);
+        
         if (places && places.length > 0) {
-          places.forEach((place: Place) => {
-            console.log('Adding marker for:', place.name);
-            new mapboxgl.Marker()
-              .setLngLat([place.longitude, place.latitude])
-              .setPopup(new mapboxgl.Popup().setHTML(`
-                <div style="min-width: 200px;">
-                  <h5 style="margin: 0 0 8px 0; color: #2d3748;">${place.name}</h5>
-                  <p style="margin: 0; font-size: 0.9em; color: #4a5568;">
-                    <strong>Categoría:</strong> ${place.category}
-                  </p>
-                </div>
-              `))
-              .addTo(this.map);
+          let validPlacesCount = 0;
+          places.forEach((place: Place, index) => {
+            console.log(`Processing place ${index + 1}:`, place.name, `(${place.latitude}, ${place.longitude})`);
+            
+            // Validar que las coordenadas estén en rangos válidos para México
+            const isValidLatitude = place.latitude >= 14 && place.latitude <= 33; // Rango aproximado de México
+            const isValidLongitude = place.longitude >= -118 && place.longitude <= -86; // Rango aproximado de México
+            
+            if (isValidLatitude && isValidLongitude) {
+              console.log('✅ Valid coordinates, adding marker for:', place.name);
+              new mapboxgl.Marker()
+                .setLngLat([place.longitude, place.latitude])
+                .setPopup(new mapboxgl.Popup().setHTML(`
+                  <div style="min-width: 200px;">
+                    <h5 style="margin: 0 0 8px 0; color: #2d3748;">${place.name}</h5>
+                    <p style="margin: 0; font-size: 0.9em; color: #4a5568;">
+                      <strong>Categoría:</strong> ${place.category}
+                    </p>
+                    <p style="margin: 4px 0 0 0; font-size: 0.8em; color: #718096;">
+                      📍 ${place.latitude.toFixed(4)}, ${place.longitude.toFixed(4)}
+                    </p>
+                  </div>
+                `))
+                .addTo(this.map);
+              validPlacesCount++;
+            } else {
+              console.warn('❌ Invalid coordinates for:', place.name, 
+                `Lat: ${place.latitude} (valid: 14-33), Lng: ${place.longitude} (valid: -118 to -86)`);
+            }
           });
+          
+          console.log(`✅ Added ${validPlacesCount} valid markers out of ${places.length} total places`);
+          
+          if (validPlacesCount === 0) {
+            console.warn('No valid places found with coordinates in Mexico range');
+          }
         } else {
           console.warn('No places found');
         }
