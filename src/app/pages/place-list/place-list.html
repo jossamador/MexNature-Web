@@ -41,6 +41,7 @@
       <!-- Places Grid -->
       <div class="places-grid">
         @for (place of filteredPlaces; track place.id) {
+        <a [routerLink]="['/lugares', place.id]" class="place-card-link">
           <div class="place-card">
             <div class="place-header">
               <h3>{{ place.name }}</h3>
@@ -53,7 +54,7 @@
               </div>
             </div>
           </div>
-        }
+        </a> }
       </div>
 
       <!-- Empty State -->

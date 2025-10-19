@@ -119,6 +119,12 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.place-card-link {
+  text-decoration: none; /* Quita el subrayado del enlace */
+  color: inherit; /* Hereda el color del texto normal */
+  display: block; /* Asegura que el enlace ocupe todo el espacio de la tarjeta */
+}
+
 .place-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

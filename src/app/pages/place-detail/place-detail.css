@@ -1,0 +1,93 @@
+/* Estilos generales y de encabezado */
+.detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.5rem;
+}
+.category-badge {
+  background-color: #007bff;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.description {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Contenido Principal: Info y Mapa */
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.info-panel ul {
+  list-style: none;
+  padding: 0;
+}
+.info-panel li {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Servicios (Amenities) */
+.amenities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.amenity-chip {
+  background-color: #e9ecef;
+  padding: 0.4rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+}
+
+/* Mini-mapa */
+.map-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mini-map {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Galería de Fotos y Senderos */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.photo-gallery img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.trails-list {
+  margin-top: 1rem;
+}
+.trail-item {
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid #007bff;
+}

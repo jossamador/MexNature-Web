@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Importante para usar *ngFor
 import { FormsModule } from '@angular/forms'; // Para usar ngModel
+import { RouterModule } from '@angular/router';
 import { Place, PlaceService } from '../../services/place'; // Importamos el servicio y la interfaz
 
 @Component({
   selector: 'app-place-list',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Añadimos FormsModule
+  imports: [CommonModule, FormsModule, RouterModule], // Añadimos FormsModule
   templateUrl: './place-list.html',
   styleUrl: './place-list.css'
 })

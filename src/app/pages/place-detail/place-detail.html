@@ -1,0 +1,61 @@
+@if (loading) {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando detalles del lugar...</p>
+  </div>
+}
+
+@if (place) {
+  <div class="detail-container">
+    <header class="detail-header">
+      <h1>{{ place.name }}</h1>
+      <span class="category-badge">{{ place.category }}</span>
+    </header>
+
+    <div class="main-content">
+      <div class="info-panel">
+        <p class="description">{{ place.description }}</p>
+        
+        <h3>Detalles</h3>
+        <ul>
+          <li><strong>📍 Coordenadas:</strong> {{ place.latitude | number:'1.4-4' }}, {{ place.longitude | number:'1.4-4' }}</li>
+          <li><strong>🏔️ Altitud:</strong> {{ place.elevationMeters }} metros</li>
+          <li><strong>♿ Accesible:</strong> {{ place.accessible ? 'Sí' : 'No' }}</li>
+          <li><strong>💲 Cuota de Entrada:</strong> {{ place.entryFee | currency:'MXN' }}</li>
+          <li><strong>⏰ Horario:</strong> {{ place.openingHours }}</li>
+        </ul>
+
+        <h3>Servicios</h3>
+        <div class="amenities-list">
+          @for (item of place.placeAmenities; track item.amenity.id) {
+            <span class="amenity-chip">{{ item.amenity.name }}</span>
+          }
+        </div>
+      </div>
+      <div class="map-panel">
+        <div #miniMapContainer class="mini-map"></div>
+      </div>
+    </div>
+
+    @if (place.photos.length > 0) {
+      <h3>Galería de Fotos</h3>
+      <div class="photo-gallery">
+        @for (photo of place.photos; track photo.id) {
+          <img [src]="photo.url" [alt]="place.name">
+        }
+      </div>
+    }
+
+    @if (place.trails.length > 0) {
+      <h3>Senderos en este Lugar</h3>
+      <div class="trails-list">
+        @for (trail of place.trails; track trail.id) {
+          <div class="trail-item">
+            <strong>{{ trail.name }}</strong> ({{ trail.difficulty }})
+            <span>- {{ trail.distanceKm }} km, aprox. {{ trail.estimatedTimeMinutes }} min.</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
