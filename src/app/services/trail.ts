@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Trail {
   id: number;
@@ -17,7 +18,7 @@ export interface Trail {
 })
 export class TrailService {
   // Apunta al nuevo endpoint que creaste en .NET
-  private apiUrl = 'http://localhost:5141/api/places/trails';
+  private apiUrl = environment.apiUrl + '/places/trails';
 
   constructor(private http: HttpClient) { }
 

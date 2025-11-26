@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError, of } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // --- 1. INTERFACES ACTUALIZADAS PARA LA PÁGINA DE DETALLE ---
 export interface Photo {
@@ -43,7 +44,7 @@ export interface Place {
   providedIn: 'root'
 })
 export class PlaceService {
-  private apiUrl = 'http://localhost:5141/api/places';
+  private apiUrl = environment.apiUrl + '/places';
 
   constructor(private http: HttpClient) { }
 
