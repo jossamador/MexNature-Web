@@ -18,7 +18,7 @@ FROM nginx:alpine
 # Angular suele normalizar los nombres a minúsculas en la carpeta dist, 
 # así que usamos 'mex-nature.web' que es el estándar.
 
-COPY --from=build /app/dist/MexNature.Web/browser /usr/share/nginx/html
+COPY --from=build /app/dist/*/browser /usr/share/nginx/html
 
 # Copiar la configuración de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
